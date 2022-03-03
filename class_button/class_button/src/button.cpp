@@ -1,5 +1,5 @@
 #include "Button.h"
-//#include "Arduino.h"
+
 Button::Button(byte pin) {
   this->pin = pin;
   lastReading = LOW;
@@ -36,4 +36,5 @@ byte Button::getState() {
 
 bool Button::isPressed() {
   return (getState() == HIGH);
+   
 }
