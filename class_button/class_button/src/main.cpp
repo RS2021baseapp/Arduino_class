@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include <EEPROM.h>
+//#include <EEPROM.h>
 #include <LED.h>
 #include <button.h>
-
+//#include <keyboard.h>
 
 #define LED_1_PIN 13
 #define LED_2_PIN 12
@@ -19,21 +19,21 @@ Led led3(LED_1_PIN);
 Led led4(LED_1_PIN); 
 
 
-void writeStringToEEPROM(int addrOffset, const String &strToWrite);
-String readStringFromEEPROM(int addrOffset);
-
+//void writeStringToEEPROM(int addrOffset, const String &strToWrite);
+//String readStringFromEEPROM(int addrOffset);
+void print(int k);
 
 
 Button button1(BUTTON_PIN);
-//int k;
-String retrievedString;
+int rows,k=0;
+//String retrievedString;
 
 void setup() {
   Serial.begin(9600);
   
-  writeStringToEEPROM(0, "Hello Arduino");
+ // writeStringToEEPROM(0, "Hello Arduino");
   
-  retrievedString = readStringFromEEPROM(0);
+ // retrievedString = readStringFromEEPROM(0);
  // Serial.print("The String we read from EEPROM: ");
   //Serial.println(retrievedString);
 
@@ -49,14 +49,21 @@ void setup() {
 }
 
 void loop() {
+  if(Serial.available())
+  {
+  rows=Serial.parseInt();
+  delay(10);
+  Serial.println(rows);
+  }
+  print(rows);
   //Serial.print("data stored at eeprom address");
   //Serial.print(" ");
   //Serial.print(k);
  // Serial.print("\n");
-   delay(1000);
-   Serial.print("The String we read from EEPROM: ");
+  // delay(1000);
+  // Serial.print("The String we read from EEPROM: ");
 
-   Serial.println(retrievedString);
+  // Serial.println(retrievedString);
   if (button1.isPressed()) {
     led1.on();
     led2.off();
@@ -71,7 +78,7 @@ void loop() {
   }
 }
 
-
+/*
 void writeStringToEEPROM(int addrOffset, const String &strToWrite)
 {
   byte len = strToWrite.length();
@@ -94,4 +101,25 @@ String readStringFromEEPROM(int addrOffset)
   }
   data[newStrLen] = '\0'; 
   return String(data);
+}
+*/
+
+void print(int rows)
+{
+  for (int i = 1; i <= rows; ++i) {
+      for (int space = 1; space <= i; ++space) {
+         Serial.print("*");
+      }
+    
+      Serial.print("\n");
+   }
+  
+for (int i = rows; i >= 1; --i) {
+      for (int space = 1; space <= i; ++space) {
+         Serial.print("*");
+      }
+    
+      Serial.print("\n");
+   }
+
 }
